@@ -51,18 +51,21 @@ $ docker push rohithvsm/amwebhook:1.0.0  # Push the image to docker hub.
 ```
 
 ## Deploy
+### Prerequisites
+Requires a MSP cluster or K8s cluster with Prometheus and Alertmanager (Change the namespace of the below yamls from ntnx-system to default or whatever else you like).
+### Steps
 Create a deployment in MSP/K8s cluster using [this deployment yaml](k8s/deploy.yaml) which uses the image we just pushed above.
 ```shell
-$ kubectl apply -f deploy.yaml
+$ kubectl apply -f k8s/deploy.yaml
 ```
 The deployment points to the image we just pushed:
 ```shell
 $ git grep "image:" deploy.yaml
           image: rohithvsm/rohithvsm:alertmgrwebhook
 ```
-Create a service to expose the app so that alertmanager can send the alerts to its webhook endpoint using [this service yaml](service.yaml):
+Create a service to expose the app so that alertmanager can send the alerts to its webhook endpoint using [this service yaml](k8s/service.yaml):
 ```shell
-$ kubectl apply -f service.yaml
+$ kubectl apply -f k8s/service.yaml
 ```
 
 ## Configure Alertmanager
@@ -75,7 +78,7 @@ $ git grep -B1 -A1 webhook_configs alertmanager.yaml
 ```
 For a MSP cluster, base64 encode the alertmanager.yaml and create a secret and apply that. Check [alertmanager-secret.yaml](alertmanager/alertmanager-secret.yaml)
 ```shell
-$ kubectl apply -f alertmanager-secret.yaml
+$ kubectl apply -f alertmanager/alertmanager-secret.yaml
 ```
 
 ## Verify
