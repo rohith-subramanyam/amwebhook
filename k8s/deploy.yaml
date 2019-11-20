@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: am-webhook
-        image: rohithvsm/rohithvsm:alertmgrwebhook
+        image: rohithvsm/amwebhook:1.0.0
         imagePullPolicy: Always
         env:
           - name: PORT
